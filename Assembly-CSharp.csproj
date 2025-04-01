@@ -45,17 +45,26 @@
     <Analyzer Include="F:\Unity\2022.3.8f1c1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\UIFrame\TempDefine\UITempDefine.cs" />
      <Compile Include="Assets\Scripts\UIFrame\UIBaseNode.cs" />
+     <Compile Include="Assets\Scripts\UIFrame\TempDefine\UITempDefine.cs" />
      <Compile Include="Assets\Scripts\UIFrame\Interface\IUIBaseView.cs" />
+     <Compile Include="Assets\Scripts\GameLaunch.cs" />
      <Compile Include="Assets\Scripts\UIFrame\UIBaseLayer.cs" />
      <Compile Include="Assets\Scripts\UIFrame\UITemplate.cs" />
+     <Compile Include="Assets\Scripts\UI\LobbyPanelController.cs" />
+     <Compile Include="Assets\Scripts\UI\LoginPanelController.cs" />
+     <Compile Include="Assets\Scripts\UI\SettingPanelController.cs" />
      <Compile Include="Assets\Scripts\UIFrame\UIBaseView.cs" />
      <Compile Include="Assets\Scripts\UIFrame\UIFrame.cs" />
      <Folder Include="Assets" />
      <Folder Include="Assets\Scripts" />
+     <Folder Include="Assets\Scripts\UIFrame" />
+     <Folder Include="Assets\Scripts\UIFrame\TempDefine" />
+     <Folder Include="Assets\Resources\UIPrefab" />
+     <Folder Include="Assets\Scripts\UI" />
      <Folder Include="Assets\Scenes" />
      <Folder Include="Assets\Scripts\UIFrame\Interface" />
+     <Folder Include="Assets\Resources" />
      <Reference Include="UnityEngine">
      <HintPath>F:\Unity\2022.3.8f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
      </Reference>

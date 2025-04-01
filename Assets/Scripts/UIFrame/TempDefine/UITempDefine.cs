@@ -3,9 +3,9 @@
 
 public enum UIKey
 {
-    Panel1 = 1,
-    Panel2 = 2,
-    Panel3 = 3,
+    LobbyPanel = 1,
+    LoginPanel = 2,
+    SettingPanel = 3,
     Panel4 = 4,
     Panel5 = 5,
     Panel6 = 6,
@@ -14,8 +14,10 @@ public enum UIKey
 public struct UITempData
 {
     public UIKey UIKey;
-    // 类名
+    // 预制名称
     public string PrefabName;
+    // 预制路径(临时)
+    public string PrefabPath;
     // 类名
     public string ClassName;
     // 是否是只能出现一个界面
@@ -30,33 +32,36 @@ public static class UITempDefine
     public static Dictionary<UIKey, UITempData> DefineDic = new()
     {
         {
-            UIKey.Panel1, new UITempData
+            UIKey.LobbyPanel, new UITempData
             {
-                UIKey = UIKey.Panel1,
-                PrefabName = "UIPanel",
-                ClassName = "UIPanel",
+                UIKey = UIKey.LobbyPanel,
+                PrefabName = "LobbyPanel",
+                PrefabPath = "UIPrefab/LobbyPanel",
+                ClassName = "LobbyPanelController",
                 IsSingle = false,
                 UILayerType = UILayerTypeEnum.UIFunction,
                 UIOpenActionTypeEnum = UIOpenActionTypeEnum.HidePreviousPanel,
             }
         },
         {
-            UIKey.Panel2, new UITempData
+            UIKey.LoginPanel, new UITempData
             {
-                UIKey = UIKey.Panel2,
-                PrefabName = "UIPanel",
-                ClassName = "UIPanel",
+                UIKey = UIKey.LoginPanel,
+                PrefabName = "LoginPanel",
+                PrefabPath = "UIPrefab/LoginPanel",
+                ClassName = "LoginPanelController",
                 IsSingle = false,
                 UILayerType = UILayerTypeEnum.UIFunction,
                 UIOpenActionTypeEnum = UIOpenActionTypeEnum.HidePreviousPanel,
             }
         },
         {
-            UIKey.Panel3, new UITempData
+            UIKey.SettingPanel, new UITempData
             {
-                UIKey = UIKey.Panel3,
-                PrefabName = "UIPanel",
-                ClassName = "UIPanel",
+                UIKey = UIKey.SettingPanel,
+                PrefabName = "SettingPanel",
+                PrefabPath = "UIPrefab/SettingPanel",
+                ClassName = "SettingPanelController",
                 IsSingle = false,
                 UILayerType = UILayerTypeEnum.UIFunction,
                 UIOpenActionTypeEnum = UIOpenActionTypeEnum.HidePreviousPanel,

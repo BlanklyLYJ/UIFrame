@@ -1,16 +1,20 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using JetBrains.Annotations;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 
 public enum UILayerTypeEnum
 {
-    UIFunction = 0,
-    UIGuide = 1,
-    UITips = 2,
-    UISystem = 3, //系统层
+    None = 0,
+    UIFunction = 3,
+    UIGuide = 4,
+    UITips = 5,
+    UISystem = 6, //系统层
     UIPool = 10, //回收层，所有无用的界面会来到这层
 }
 
@@ -89,8 +93,14 @@ public class UIFrame
         uiLayers.Add(UILayerTypeEnum.UIPool, uiPool);
     }
 
+
+    public void Open(UIKey uiKey)
+    {
+        Open(uiKey, null);
+    }
+
     // 打开界面
-    public void Open(UIKey uiKey, IUIBaseViewParam param, UILayerTypeEnum layerType)
+    public void Open(UIKey uiKey, IUIBaseViewParam param, UILayerTypeEnum layerType = UILayerTypeEnum.None)
     {
         // todo 从配置中读取界面参数，
         if (!UITempDefine.DefineDic.TryGetValue(uiKey, out UITempData uiTempData))
@@ -99,25 +109,45 @@ public class UIFrame
             return;
         }
 
+        if (layerType == UILayerTypeEnum.None)
+        {
+            layerType = uiTempData.UILayerType;
+        }
+        
         if (!uiLayers.TryGetValue(layerType, out UIBaseLayer uiBaseLayer))
         {
             Debug.LogError($"[UIFrame] 层级 layerType:{layerType}并未初始化");
             return;
+        }    
+        // todo 创建界面实例go，这里应该是异步
+        GameObject go;
+        GameObject goPrefab = Resources.Load<GameObject>(uiTempData.PrefabPath);
+        if (goPrefab == null)
+        {
+            Debug.LogError($"界面预制：{uiTempData.PrefabName} 不存在！");
+            // 出现这种情况是错的，应该是先创建预制，再去创建对应的脚本
+            return;
+        }
+        else
+        {
+            go = Object.Instantiate(goPrefab);
         }
 
-        // 获取新界面，
+        // 获取新界面
         var viewData = GetOrCreateUIBaseView(uiKey, uiTempData);
         if (viewData.Item2 == null)
         {
             return;
         }
-        // 创建界面实例go
-        
+
+        viewData.Item2.SetGameObject(go);
+        viewData.Item2.OpenActionType = uiTempData.UIOpenActionTypeEnum;
+        viewData.Item2.SetParam(param);
         
         // 在这个时候，完成顶层界面的转换，但是这并不意味着界面的完全关闭和完全开启
         // 引导需要再界面初始化并且show完毕之后才能开始
         UIBaseView node = uiBaseLayer.AddView(uiKey, viewData.Item2, viewData.Item1);
-        node.SetParam(param);
+        
         
         if (viewData.Item1)
         {
@@ -170,25 +200,52 @@ public class UIFrame
     private UIBaseView _CreateUIBaseView(UITempData uiTempData)
     {
         string className = uiTempData.ClassName;
-        Assembly assembly = Assembly.GetExecutingAssembly(); // 获取当前程序集
-        Type viewType = assembly.GetType(className); // 获取类型
+        // Assembly assembly = Assembly.GetExecutingAssembly(); // 获取当前程序集
+        Type viewType = GetTypeCached(className); // 获取类型
 
         if (viewType == null || !typeof(UIBaseView).IsAssignableFrom(viewType))
         {
-            Debug.LogError($"[UIFrame] 类型未继承UIBaseNode或不存在? uiKey:{uiTempData.UIKey} className:{className}");
+            Debug.LogError($"[UIFrame] 类型未继承UIBaseView或不存在? uiKey:{uiTempData.UIKey} className:{className}");
             return null;
         }
 
         UIBaseView baseView = Activator.CreateInstance(viewType) as UIBaseView; // 创建实例
         if (baseView == null)
         {
-            Debug.LogError($"[UIFrame] 类型无法转换为UIBaseNode? uiKey:{uiTempData.UIKey} nodeType:{viewType}");
+            Debug.LogError($"[UIFrame] 类型无法转换为UIBaseView? uiKey:{uiTempData.UIKey} nodeType:{viewType}");
             return null;
         }
 
         return baseView;
     }
+    
 
+    private static readonly Dictionary<string, Type> _typeCache = new Dictionary<string, Type>();
+
+    Type GetTypeCached(string className)
+    {
+        if (!_typeCache.TryGetValue(className, out Type type))
+        {
+            type = FindTypeByName(className);
+            if (type != null) _typeCache.Add(className, type);
+        }
+        return type;
+    }
+    
+    // 使用方法：传入类名（不需要命名空间），返回匹配的类型
+    Type FindTypeByName(string className)
+    {
+        // 遍历所有已加载的程序集
+        foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+        {
+            // 查找第一个名称匹配的类型（区分大小写）
+            var type = assembly.GetTypes().FirstOrDefault(t => t.Name == className);
+            if (type != null)
+                return type;
+        }
+        return null; // 未找到
+    }
+    
     public void Close(UIKey uiKey, UILayerTypeEnum layerType)
     {
     }

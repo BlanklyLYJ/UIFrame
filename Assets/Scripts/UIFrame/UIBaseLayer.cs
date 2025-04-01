@@ -39,6 +39,7 @@ public class UIBaseLayer
         parentRoot = _parentRoot;
         layerRoot = new GameObject(layerType.ToString());
         layerRoot.transform.SetParent(_parentRoot.transform);
+        layerRoot.transform.localPosition = Vector3.zero;
         // 层级设置为UI
         layerRoot.layer = LayerMask.NameToLayer("UI");
         // 添加画布
@@ -94,14 +95,30 @@ public class UIBaseLayer
 
         if (isNew)
         {
-            
+            uiBaseView.SetLayerData(layerRoot, layerType);
+            uiBaseView.SetSortingOrder(GetNextTopSortingNumber());
         }
         else
         {
-            
+            AdjustSortOrder();
         }
 
         return uiBaseView;
+    }
+
+    private int GetNextTopSortingNumber()
+    {
+        currentTopSortNumber += uiPerUISortOrderInterval;
+        return currentTopSortNumber;
+    }
+
+    private void AdjustSortOrder()
+    {
+        currentTopSortNumber = sortBaseNumber;
+        foreach (UIBaseView baseView in _uiViewList)
+        {
+            baseView.SetSortingOrder(GetNextTopSortingNumber());
+        }
     }
 
     // 初始化

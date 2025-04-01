@@ -16,12 +16,15 @@ public class UIBaseView : IUIBaseView
 
     // 所属界面层级
     private UILayerTypeEnum _layerType;
+    
+    // 画布
+    private Canvas _canvas;
+
+    // 动效资源
+    private Animation _animation;
 
     // 如果该界面是子界面，那么他的父界面是谁
     private IUIBaseView _rootView;
-
-    // 具体界面脚本
-    private IUIBaseView _panelView;
 
     // 资源加载器，此处没有接入就先放着
     private string _loader;
@@ -47,15 +50,6 @@ public class UIBaseView : IUIBaseView
 
     // 打开界面之后处理的类型
     public UIOpenActionTypeEnum OpenActionType;
-
-    // 排序id
-    private int sortingOrder;
-
-    // 画布
-    private Canvas rootCanvas;
-
-    // 动效资源
-    private Animation _animation;
 
     #region 生命周期函数
     public void Init()
@@ -120,5 +114,25 @@ public class UIBaseView : IUIBaseView
     public void SetParam(IUIBaseViewParam param)
     {
         ParamData = param;
+    }
+    
+    public void SetGameObject(GameObject gameObject)
+    {
+        _go = gameObject;
+        _canvas = _go.GetComponent<Canvas>();
+        if (_canvas == null)
+            _canvas = _go.AddComponent<Canvas>();
+        _canvas.sortingLayerName = "UI";
+    }
+    public void SetLayerData(GameObject parent, UILayerTypeEnum layerType)
+    {
+        _layerType = layerType;
+        _go.transform.SetParent(parent.transform, false);
+    }
+
+    public void SetSortingOrder(int sortOrder)
+    {
+        _canvas.overrideSorting = true;
+        _canvas.sortingOrder = sortOrder;
     }
 }
