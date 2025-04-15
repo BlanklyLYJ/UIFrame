@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using Object = UnityEngine.Object;
 
 public class UIBaseLayer
 {
@@ -114,10 +115,12 @@ public class UIBaseLayer
 
     private void AdjustSortOrder()
     {
+        int count = 0;
         currentTopSortNumber = sortBaseNumber;
         foreach (UIBaseView baseView in _uiViewList)
         {
             baseView.SetSortingOrder(GetNextTopSortingNumber());
+            baseView._go.transform.SetSiblingIndex(count++);
         }
     }
 

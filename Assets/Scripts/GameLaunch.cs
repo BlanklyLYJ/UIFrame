@@ -6,6 +6,5 @@ public class GameLaunch : MonoBehaviour
     {
         UIFrame.Instance.Init();
         UIFrame.Instance.Open(UIKey.LoginPanel);
-        UIFrame.Instance.Open(UIKey.LobbyPanel);
     }
 }

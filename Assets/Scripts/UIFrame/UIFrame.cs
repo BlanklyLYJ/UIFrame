@@ -119,20 +119,6 @@ public class UIFrame
             Debug.LogError($"[UIFrame] 层级 layerType:{layerType}并未初始化");
             return;
         }    
-        // todo 创建界面实例go，这里应该是异步
-        GameObject go;
-        GameObject goPrefab = Resources.Load<GameObject>(uiTempData.PrefabPath);
-        if (goPrefab == null)
-        {
-            Debug.LogError($"界面预制：{uiTempData.PrefabName} 不存在！");
-            // 出现这种情况是错的，应该是先创建预制，再去创建对应的脚本
-            return;
-        }
-        else
-        {
-            go = Object.Instantiate(goPrefab);
-        }
-
         // 获取新界面
         var viewData = GetOrCreateUIBaseView(uiKey, uiTempData);
         if (viewData.Item2 == null)
@@ -140,7 +126,6 @@ public class UIFrame
             return;
         }
 
-        viewData.Item2.SetGameObject(go);
         viewData.Item2.OpenActionType = uiTempData.UIOpenActionTypeEnum;
         viewData.Item2.SetParam(param);
         
@@ -199,6 +184,17 @@ public class UIFrame
     [CanBeNull]
     private UIBaseView _CreateUIBaseView(UITempData uiTempData)
     {
+        // todo 创建界面实例go，这里应该是异步
+        GameObject go;
+        GameObject goPrefab = Resources.Load<GameObject>(uiTempData.PrefabPath);
+        if (goPrefab == null)
+        {
+            Debug.LogError($"界面预制：{uiTempData.PrefabName} 不存在！");
+            // 出现这种情况是错的，应该是先创建预制，再去创建对应的脚本
+            return null;
+        }
+        go = Object.Instantiate(goPrefab);
+        
         string className = uiTempData.ClassName;
         // Assembly assembly = Assembly.GetExecutingAssembly(); // 获取当前程序集
         Type viewType = GetTypeCached(className); // 获取类型
@@ -206,6 +202,7 @@ public class UIFrame
         if (viewType == null || !typeof(UIBaseView).IsAssignableFrom(viewType))
         {
             Debug.LogError($"[UIFrame] 类型未继承UIBaseView或不存在? uiKey:{uiTempData.UIKey} className:{className}");
+            Object.Destroy(go);
             return null;
         }
 
@@ -213,9 +210,11 @@ public class UIFrame
         if (baseView == null)
         {
             Debug.LogError($"[UIFrame] 类型无法转换为UIBaseView? uiKey:{uiTempData.UIKey} nodeType:{viewType}");
+            Object.Destroy(go);
             return null;
         }
 
+        baseView.SetGameObject(go);
         return baseView;
     }
     
@@ -248,6 +247,8 @@ public class UIFrame
     
     public void Close(UIKey uiKey, UILayerTypeEnum layerType)
     {
+        
+        
     }
 
     public void GetTopPanel()

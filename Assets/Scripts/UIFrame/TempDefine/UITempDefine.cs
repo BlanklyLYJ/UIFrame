@@ -38,7 +38,7 @@ public static class UITempDefine
                 PrefabName = "LobbyPanel",
                 PrefabPath = "UIPrefab/LobbyPanel",
                 ClassName = "LobbyPanelController",
-                IsSingle = false,
+                IsSingle = true,
                 UILayerType = UILayerTypeEnum.UIFunction,
                 UIOpenActionTypeEnum = UIOpenActionTypeEnum.HidePreviousPanel,
             }
@@ -50,7 +50,7 @@ public static class UITempDefine
                 PrefabName = "LoginPanel",
                 PrefabPath = "UIPrefab/LoginPanel",
                 ClassName = "LoginPanelController",
-                IsSingle = false,
+                IsSingle = true,
                 UILayerType = UILayerTypeEnum.UIFunction,
                 UIOpenActionTypeEnum = UIOpenActionTypeEnum.HidePreviousPanel,
             }
@@ -62,7 +62,7 @@ public static class UITempDefine
                 PrefabName = "SettingPanel",
                 PrefabPath = "UIPrefab/SettingPanel",
                 ClassName = "SettingPanelController",
-                IsSingle = false,
+                IsSingle = true,
                 UILayerType = UILayerTypeEnum.UIFunction,
                 UIOpenActionTypeEnum = UIOpenActionTypeEnum.HidePreviousPanel,
             }
@@ -73,7 +73,7 @@ public static class UITempDefine
                 UIKey = UIKey.Panel4,
                 PrefabName = "UIPanel",
                 ClassName = "UIPanel",
-                IsSingle = false,
+                IsSingle = true,
                 UILayerType = UILayerTypeEnum.UIFunction,
                 UIOpenActionTypeEnum = UIOpenActionTypeEnum.HidePreviousPanel,
             }
@@ -84,7 +84,7 @@ public static class UITempDefine
                 UIKey = UIKey.Panel5,
                 PrefabName = "UIPanel",
                 ClassName = "UIPanel",
-                IsSingle = false,
+                IsSingle = true,
                 UILayerType = UILayerTypeEnum.UIFunction,
                 UIOpenActionTypeEnum = UIOpenActionTypeEnum.HidePreviousPanel,
             }
@@ -95,7 +95,7 @@ public static class UITempDefine
                 UIKey = UIKey.Panel6,
                 PrefabName = "UIPanel",
                 ClassName = "UIPanel",
-                IsSingle = false,
+                IsSingle = true,
                 UILayerType = UILayerTypeEnum.UIFunction,
                 UIOpenActionTypeEnum = UIOpenActionTypeEnum.HidePreviousPanel,
             }

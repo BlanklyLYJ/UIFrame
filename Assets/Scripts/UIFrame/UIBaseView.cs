@@ -6,44 +6,44 @@ using UnityEngine;
 public class UIBaseView : IUIBaseView
 {
     // 界面Id
-    private UIKey _uiKey;
+    public  UIKey _uiKey;
 
     // 界面的预制
-    private GameObject _go;
-
+    public GameObject _go;
+    
     // 预制名称，用于加载界面预制
-    private string _prefabName;
+    public  string _prefabName;
 
     // 所属界面层级
-    private UILayerTypeEnum _layerType;
+    public  UILayerTypeEnum _layerType;
     
     // 画布
-    private Canvas _canvas;
+    public  Canvas _canvas;
 
     // 动效资源
-    private Animation _animation;
+    public  Animation _animation;
 
     // 如果该界面是子界面，那么他的父界面是谁
-    private IUIBaseView _rootView;
+    public  IUIBaseView _rootView;
 
     // 资源加载器，此处没有接入就先放着
-    private string _loader;
+    public  string _loader;
 
     // 挂载子界面Key的栈，后进先出
-    private Stack<int> _viewNameStack = new();
+    public  Stack<int> _viewNameStack = new();
 
     // 挂载子界面baseView的栈，后进先出
-    private Stack<UIBaseView> _viewStack = new();
+    public  Stack<UIBaseView> _viewStack = new();
 
     // todo 整理成生命周期enum
     // 是否开启
-    private bool _isOpen = false;
+    public  bool _isOpen = false;
 
     // 是否开启
-    private bool _isClose = false;
+    public  bool _isClose = false;
 
     // 是否已经被销毁 启用隔帧销毁
-    private bool _isDispose = false;
+    public  bool _isDispose = false;
 
     // 附带参数
     public IUIBaseViewParam ParamData;
